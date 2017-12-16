@@ -24,10 +24,25 @@ error = y_pred - y
 
 mse = tf.reduce_mean(tf.square(error), name="mse")
 
-# partial derivatives fo the cost function
-gradients = 2/m * tf.matmul(tf.transpose(X), error)
-
+#
+#opt 1
+#
+## partial derivatives fo the cost function
+gradients = 2/m * tf.matmul(tf.transpose(X), error)   # default: manually  (work!)
 training_op = tf.assign(theta, theta - learning_rate * gradients)
+
+##
+##opt 2
+##
+#gradients =  tf.gradients(mse, [theta])[0]  # audodiff: this did not work! ???
+#training_op = tf.assign(theta, theta - learning_rate * gradients)
+
+
+##
+##opt 3
+##
+#optimizer = tf.train.GradientDescentOptimizer(learning_rate = learning_rate)
+#training_op = optimizer.minimize(mse)
 
 init = tf.global_variables_initializer()
 
